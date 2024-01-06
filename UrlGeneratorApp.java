@@ -113,7 +113,7 @@ public class UrlGeneratorApp {
             // The regular expression "[a-z0-9-/.]*" checks if the URL only contains lowercase letters (a-z), digits (0-9), hyphens (-), forward slashes (/), and periods (.).
             // The "*" at the end of the expression means that any number of these characters (including zero) can appear in the URL.
             // This is the best approach because it allows us to check for only the allowed characters in the URL.
-            boolean validCharacters = url.matches("[a-z0-9-/.]*");
+            boolean validCharacters = url.matches("[a-zA-Z0-9-/:.]*");
     
             boolean isValid = containsGoogle && validHostname && validLength && validCharacters;
             results.add(isValid);

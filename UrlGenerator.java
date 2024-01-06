@@ -13,7 +13,7 @@ public class UrlGenerator {
         CompanyName = companyName;
     }
 
-    // Compute the URL
+    // Compute(Generate) the URL
     private String compute() {
         String protocol = buildProtocol();
         String hostname = buildHostName();
@@ -64,7 +64,7 @@ public class UrlGenerator {
         // Counts the vowels and consonants in the company name and appends .edu or .org depending on if the number of vowels is even or odd
         int consonants = countConsonants();
         
-        // Uses modulus to determine if the number of vowels is even or odd
+        // Uses modulus to determine if the number of consonants is even or odd
         if (consonants % 2 == 0) {
             hostnameBuilder.append("edu");
         } else {
@@ -107,7 +107,7 @@ public class UrlGenerator {
         String companyName = CompanyName.toLowerCase();
         boolean previousCharWasVowel = false;
     
-        // Iterate through the characters in the CompanyName, and if it is a letter, check if it is a vowel. If it is a vowel, check if the previous character was a vowel. If it was, increment the vowelPairs variable. If it wasn't, set previousCharWasVowel to true.
+        // Iterate through the characters in the CompanyName, and if it is a letter, check if it is a vowel. If it is a vowel, check if the previous character was a vowel. If it is, increment the vowelPairs variable. If it isn't, set previousCharWasVowel to true.
         for (int i = 0; i < companyName.length(); i++) {
             char c = companyName.charAt(i);
     
