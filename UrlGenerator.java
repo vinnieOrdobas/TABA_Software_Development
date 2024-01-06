@@ -1,17 +1,11 @@
-import java.util.HashMap;
 
 public class UrlGenerator {
     private String CompanyName;
-    private HashMap<String, String> Replacements;
     private static final char[] ENGLISH_VOWELS = {'a', 'e', 'i', 'o', 'u'};
 
     // Constructor
     public UrlGenerator(String companyName) {
         CompanyName = companyName;
-        Replacements = new HashMap<>();
-        Replacements.put("Incorporated", "Inc");
-        Replacements.put("Limited", "Ltd");
-        Replacements.put("Limited Liability Company", "LLC");
     }
 
     // Set CompanyName
@@ -49,21 +43,18 @@ public class UrlGenerator {
     }
 
     private String replaceCompanyNameParts() {
-        // split the company name into parts
-        String[] companyNameParts = CompanyName.split(" ");
-        // Get the first part of the company name
+        // Replace the words directly
+        String replacedCompanyName = CompanyName.replace("Limited Liability Company", "LLC")
+                                               .replace("Limited", "Ltd")
+                                               .replace("Incorporated", "Inc");
+    
+        // Split the company name into parts and join them with underscores
+        String[] companyNameParts = replacedCompanyName.split(" ");
         String companyFirstName = companyNameParts[0];
-
         for (int i = 1; i < companyNameParts.length; i++) {
-            String companyNamePart = companyNameParts[i];
-
-            if (Replacements.containsKey(companyNamePart)) {
-                companyFirstName += "_" + Replacements.get(companyNamePart);
-            } else {
-                companyFirstName += "_" + companyNamePart;
-            }
+            companyFirstName += "_" + companyNameParts[i];
         }
-
+    
         return companyFirstName + ".";
     }
 

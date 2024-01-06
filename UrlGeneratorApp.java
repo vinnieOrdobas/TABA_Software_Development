@@ -16,23 +16,35 @@ public class UrlGeneratorApp {
 
             switch (option) {
                 case 1:
+                int numUrls = 0;
+                boolean validInput = false;
+            
+                do {
                     System.out.println("Enter the number of URLs to generate:");
-                    int numUrls = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline left-over
-
-                    List<String> companyNames = new ArrayList<>();
-                    for (int i = 0; i < numUrls; i++) {
-                        System.out.println("Enter company name number " + (i + 1) + ":");
-                        String companyName = scanner.nextLine();
-                        companyNames.add(companyName);
+                    if (scanner.hasNextInt()) {
+                        numUrls = scanner.nextInt();
+                        validInput = true;
+                    } else {
+                        System.out.println("Error: Please enter a valid integer.");
+                        scanner.next(); // Consume the invalid input
                     }
-
-                    for (String companyName : companyNames) {
-                        UrlGenerator urlGenerator = new UrlGenerator(companyName);
-                        String url = urlGenerator.getGeneratedURL();
-                        System.out.println("Generated URL for " + companyName + ": " + url);
-                    }
-                    break;
+                } while (!validInput);
+            
+                scanner.nextLine(); // Consume newline left-over
+            
+                List<String> companyNames = new ArrayList<>();
+                for (int i = 0; i < numUrls; i++) {
+                    System.out.println("Enter company name number " + (i + 1) + ":");
+                    String companyName = scanner.nextLine();
+                    companyNames.add(companyName);
+                }
+            
+                for (String companyName : companyNames) {
+                    UrlGenerator urlGenerator = new UrlGenerator(companyName);
+                    String url = urlGenerator.getGeneratedURL();
+                    System.out.println("Generated URL for " + companyName + ": " + url);
+                }
+                break;
 
                 case 2:
                     System.out.println("Enter the number of URLs to validate:");
