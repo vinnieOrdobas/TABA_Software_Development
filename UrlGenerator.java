@@ -48,12 +48,8 @@ public class UrlGenerator {
                                                .replace("Limited", "Ltd")
                                                .replace("Incorporated", "Inc");
     
-        // Split the company name into parts and join them with underscores
-        String[] companyNameParts = replacedCompanyName.split(" ");
-        String companyFirstName = companyNameParts[0];
-        for (int i = 1; i < companyNameParts.length; i++) {
-            companyFirstName += "_" + companyNameParts[i];
-        }
+        // Replace the space characters with underscores
+        String companyFirstName = replacedCompanyName.replace(" ", "_");
     
         return companyFirstName + ".";
     }
