@@ -11,7 +11,7 @@ public class UrlGenerator {
         Replacements = new HashMap<>();
         Replacements.put("Incorporated", "Inc");
         Replacements.put("Limited", "Ltd");
-        Replacements.put("Limited Liability", "LLC");
+        Replacements.put("Limited Liability Company", "LLC");
     }
 
     // Set CompanyName
@@ -48,42 +48,38 @@ public class UrlGenerator {
         }
     }
 
+    private String replaceCompanyNameParts() {
+        // split the company name into parts
+        String[] companyNameParts = CompanyName.split(" ");
+        // Get the first part of the company name
+        String companyFirstName = companyNameParts[0];
+
+        for (int i = 1; i < companyNameParts.length; i++) {
+            String companyNamePart = companyNameParts[i];
+
+            if (Replacements.containsKey(companyNamePart)) {
+                companyFirstName += "_" + Replacements.get(companyNamePart);
+            } else {
+                companyFirstName += "_" + companyNamePart;
+            }
+        }
+
+        return companyFirstName + ".";
+    }
+
     // Build URL hostname
     private String buildHostName() {
         // instantiate a StringBuilder object - it's more efficient than concatenating strings
         StringBuilder hostnameBuilder = new StringBuilder();
-        // split the company name into parts
-        String[] companyNameParts = CompanyName.split(" ");
-    
-        // It starts at index = 1 because the first part of the string is the company name - this loop iterates over the rest of the parts and replaces it with the values in the hashmap
-        for (int i = 1; i < companyNameParts.length; i++) {
-            String companyNamePart = companyNameParts[i];
-    
-            for (String key : Replacements.keySet()) {
-                if (companyNamePart.contains(key)) {
-                    companyNamePart = companyNamePart.replace(key, Replacements.get(key));
-                }
-            }
-            
-            // Replaces spaces with underscores
-            hostnameBuilder.append(companyNamePart.replace(" ", "_"));
-    
-            // Appends a period if it is the last part of the company name
-            if (i < companyNameParts.length - 1) {
-                hostnameBuilder.append(".");
-            }
-        }
+
+        hostnameBuilder.append(replaceCompanyNameParts());
     
         // Counts the vowels and consonants in the company name and appends .edu or .org depending on if the number of vowels is even or odd
-        int[] counts = countVowelsAndConsonants();
-        int vowels = counts[0];
-        int consonants = counts[1];
+        int consonants = countConsonants();
         
         // Uses modulus to determine if the number of vowels is even or odd
-        if (vowels % 2 == 0) {
+        if (consonants % 2 == 0) {
             hostnameBuilder.append("edu");
-        } else if (consonants % 2 == 1) {
-            hostnameBuilder.append("org");
         } else {
             hostnameBuilder.append("org");
         }
@@ -91,26 +87,21 @@ public class UrlGenerator {
         return hostnameBuilder.toString();
     }
 
-    // Counts the vowels and consonants in the company name
-    private int[] countVowelsAndConsonants() {
-        int vowels = 0;
+    // Counts the consonants in the company name
+    private int countConsonants() {
         int consonants = 0;
         String companyName = CompanyName.toLowerCase();
-
-        // Iterates over the company name and counts the vowels and consonants, validating whether the character is a letter or not
+    
+        // Iterates over the company name and counts the consonants, validating whether the character is a letter or not
         for (int i = 0; i < companyName.length(); i++) {
             char c = companyName.charAt(i);
-
-            if (Character.isLetter(c)) {
-                if (isVowel(c)) {
-                    vowels++;
-                } else {
-                    consonants++;
-                }
+    
+            if (Character.isLetter(c) && !isVowel(c)) {
+                consonants++;
             }
         }
-
-        return new int[]{vowels, consonants};
+    
+        return consonants;
     }
 
     // Checks if the character is a vowel, using the constant ENGLISH_VOWELS
